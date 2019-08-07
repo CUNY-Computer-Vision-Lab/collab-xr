@@ -1,1 +1,0 @@
-Assets/Holograms/Support/Projector/Models/holoBox/holoBox_model.fbx
