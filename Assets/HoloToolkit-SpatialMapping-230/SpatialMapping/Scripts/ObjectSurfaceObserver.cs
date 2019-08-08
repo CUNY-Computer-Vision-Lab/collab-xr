@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
+using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 namespace Academy.HoloToolkit.Unity
 {
@@ -22,6 +23,34 @@ namespace Academy.HoloToolkit.Unity
                 SpatialMappingManager.Instance.SetSpatialMappingSource(this);
             }
 #endif
+        }
+
+        /// <summary>
+        /// Send mesh to collaborator.
+        /// </summary>
+        void TransferMesh()
+        {
+            GameObject roomObject = GameObject.FindWithTag("SRMesh");
+            PhotonView photonView = PhotonView.Get(roomObject);
+
+            MeshFilter[] meshFilters = roomObject.GetComponentsInChildren<MeshFilter>();
+            CombineInstance[] combine = new CombineInstance[meshFilters.Length];
+
+            int i = 0;
+            while (i < meshFilters.Length)
+            {
+                combine[i].mesh = meshFilters[i].mesh;
+                combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
+                i++;
+            }
+
+            Mesh mesh = new Mesh();
+
+            mesh.CombineMeshes(combine);
+
+            byte[] serialized = MeshSerializer.WriteMesh(mesh, true);
+
+            photonView.RPC("TransferMesh", RpcTarget.All, serialized);
         }
 
         /// <summary>
@@ -66,6 +95,9 @@ namespace Academy.HoloToolkit.Unity
                     collider.sharedMesh = null;
                     collider.sharedMesh = surface.GetComponent<MeshFilter>().sharedMesh;
                 }
+
+                // Collab-xr -- send mesh data to remote agent
+                this.TransferMesh();
             }
             catch
             {
