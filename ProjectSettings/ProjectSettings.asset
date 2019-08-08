@@ -567,7 +567,7 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Template3D
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Z:\Projects\collab-xr\Collab XR\Assets\WSATestCertificate.pfx
+  metroCertificatePath: Collab XR\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
   metroCertificateSubject: DefaultCompany
   metroCertificateIssuer: DefaultCompany
