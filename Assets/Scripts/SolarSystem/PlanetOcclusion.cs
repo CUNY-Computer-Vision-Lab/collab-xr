@@ -45,16 +45,16 @@ public class PlanetOcclusion : MonoBehaviour
             // 5.a: Convert the current checkPoint to world coordinates.
             // Call gameObject.transform.TransformPoint(checkPoints[i]).
             // Assign the result to a new Vector3 variable called 'checkPt'.
-
+            Vector3 checkPt = gameObject.transform.TransformPoint(checkPoints[i]);
 
             // 5.a: Call Vector3.Distance() to calculate the distance
             // between the Main Camera's position and 'checkPt'.
             // Assign the result to a new float variable called 'distance'.
-
+            float distance = Vector3.Distance(Camera.main.transform.position, checkPt);
 
             // 5.a: Take 'checkPt' and subtract the Main Camera's position from it.
             // Assign the result to a new Vector3 variable called 'direction'.
-
+            Vector3 direction = checkPt - Camera.main.transform.position;
 
             // Used to indicate if the call to Physics.Raycast() was successful.
             bool raycastHit = false;
@@ -66,13 +66,13 @@ public class PlanetOcclusion : MonoBehaviour
             // - Pass in 'distance' for the maxDistance.
             // - Pass in SpatialMappingManager.Instance.LayerMask as layerMask.
             // Assign the result to 'raycastHit'.
-            
+            raycastHit = Physics.Raycast(Camera.main.transform.position, direction, distance, SpatialMappingManager.Instance.LayerMask);
 
             if (raycastHit)
             {
                 // 5.a: Our raycast hit a surface, so the planet is occluded.
                 // Set the occlusionObject to active.
-
+                occlusionObject.SetActive(true);
 
                 // At least one point is occluded, so break from the loop.
                 break;
@@ -81,7 +81,7 @@ public class PlanetOcclusion : MonoBehaviour
             {
                 // 5.a: The Raycast did not hit, so the planet is not occluded.
                 // Deactivate the occlusionObject.
-
+                occlusionObject.SetActive(false);
             }
         }
     }
