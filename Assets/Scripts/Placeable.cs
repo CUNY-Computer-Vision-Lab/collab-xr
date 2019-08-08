@@ -10,10 +10,10 @@ using Academy.HoloToolkit.Unity;
 public enum PlacementSurfaces
 {
     // Horizontal surface with an upward pointing normal.    
-    Horizontal  = 1,
+    Horizontal = 1,
 
     // Vertical surface with a normal facing the user.
-    Vertical    = 2,
+    Vertical = 2,
 }
 
 /// <summary>
@@ -26,7 +26,7 @@ public enum PlacementSurfaces
 /// * A transparent cube representing the object's box collider.
 /// * Shadow on the target surface indicating whether or not placement is valid.
 /// </summary>
-public class Placeable : MonoBehaviour 
+public class Placeable : MonoBehaviour
 {
     [Tooltip("The base material used to render the bounds asset when placement is allowed.")]
     public Material PlaceableBoundsMaterial = null;
@@ -90,7 +90,7 @@ public class Placeable : MonoBehaviour
     // The location at which the object will be placed.
     private Vector3 targetPosition;
 
-	/// <summary>
+    /// <summary>
     /// Called when the GameObject is created.
     /// </summary>
     private void Awake()
@@ -98,7 +98,7 @@ public class Placeable : MonoBehaviour
         targetPosition = gameObject.transform.position;
 
         // Get the object's collider.
-	    boxCollider = gameObject.GetComponent<BoxCollider>();
+        boxCollider = gameObject.GetComponent<BoxCollider>();
         if (boxCollider == null)
         {
             // The object does not have a collider, create one and remember that
@@ -127,14 +127,14 @@ public class Placeable : MonoBehaviour
     {
         /* TODO: 4.a CODE ALONG 4.a */
 
-        //if (!IsPlacing)
-        //{
-        //    OnPlacementStart();
-        //}
-        //else
-        //{
-        //    OnPlacementStop();
-        //}
+        if (!IsPlacing)
+        {
+            OnPlacementStart();
+        }
+        else
+        {
+            OnPlacementStop();
+        }
     }
 
     /// <summary>
@@ -144,39 +144,39 @@ public class Placeable : MonoBehaviour
     {
         /* TODO: 4.a CODE ALONG 4.a */
 
-        //if (IsPlacing)
-        //{
-        //    // Move the object.
-        //    Move();
+        if (IsPlacing)
+        {
+            // Move the object.
+            Move();
 
-        //    // Set the visual elements.
-        //    Vector3 targetPosition;
-        //    Vector3 surfaceNormal;
-        //    bool canBePlaced = ValidatePlacement(out targetPosition, out surfaceNormal);
-        //    DisplayBounds(canBePlaced);
-        //    DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
-        //}
-        //else
-        //{
-        //    // Disable the visual elements.
-        //    boundsAsset.SetActive(false);
-        //    shadowAsset.SetActive(false);
+            // Set the visual elements.
+            Vector3 targetPosition;
+            Vector3 surfaceNormal;
+            bool canBePlaced = ValidatePlacement(out targetPosition, out surfaceNormal);
+            DisplayBounds(canBePlaced);
+            DisplayShadow(targetPosition, surfaceNormal, canBePlaced);
+        }
+        else
+        {
+            // Disable the visual elements.
+            boundsAsset.SetActive(false);
+            shadowAsset.SetActive(false);
 
-        //    // Gracefully place the object on the target surface.
-        //    float dist = (gameObject.transform.position - targetPosition).magnitude;
-        //    if (dist > 0)
-        //    {
-        //        gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
-        //    }
-        //    else
-        //    {
-        //        // Unhide the child object(s) to make placement easier.
-        //        for (int i = 0; i < ChildrenToHide.Count; i++)
-        //        {
-        //            ChildrenToHide[i].SetActive(true);
-        //        }
-        //    }
-        //}
+            // Gracefully place the object on the target surface.
+            float dist = (gameObject.transform.position - targetPosition).magnitude;
+            if (dist > 0)
+            {
+                gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, targetPosition, placementVelocity / dist);
+            }
+            else
+            {
+                // Unhide the child object(s) to make placement easier.
+                for (int i = 0; i < ChildrenToHide.Count; i++)
+                {
+                    ChildrenToHide[i].SetActive(true);
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -195,7 +195,7 @@ public class Placeable : MonoBehaviour
     {
         Vector3 raycastDirection = gameObject.transform.forward;
 
-        if (PlacementSurface == PlacementSurfaces.Horizontal)        
+        if (PlacementSurface == PlacementSurfaces.Horizontal)
         {
             // Placing on horizontal surfaces.
             // Raycast from the bottom face of the box collider.
@@ -285,7 +285,7 @@ public class Placeable : MonoBehaviour
         Vector3 corner2;
         Vector3 corner3;
 
-        if (PlacementSurface == PlacementSurfaces.Horizontal)        
+        if (PlacementSurface == PlacementSurfaces.Horizontal)
         {
             // Placing on horizontal surfaces.
             center = new Vector3(boxCollider.center.x, minY, boxCollider.center.z);
@@ -294,7 +294,7 @@ public class Placeable : MonoBehaviour
             corner2 = new Vector3(maxX, minY, minZ);
             corner3 = new Vector3(maxX, minY, maxZ);
         }
-        else 
+        else
         {
             // Placing on vertical surfaces.
             center = new Vector3(boxCollider.center.x, boxCollider.center.y, maxZ);
@@ -351,7 +351,7 @@ public class Placeable : MonoBehaviour
         {
             return;
         }
- 
+
         // The object is allowed to be placed.
         // We are placing at a small buffer away from the surface.
         targetPosition = position + (0.01f * surfaceNormal);
@@ -417,7 +417,7 @@ public class Placeable : MonoBehaviour
         // Follow the user's gaze.
         float dist = Mathf.Abs((gameObject.transform.position - moveTo).magnitude);
         gameObject.transform.position = Vector3.Lerp(gameObject.transform.position, moveTo, placementVelocity / dist);
-        
+
         // Orient the object.
         // We are using the return value from Physics.Raycast to instruct
         // the OrientObject function to align to the vertical surface if appropriate.
@@ -503,11 +503,11 @@ public class Placeable : MonoBehaviour
     /// <param name="canBePlaced">
     /// Specifies if the object is in a valid placement location.
     /// </param>
-    private void DisplayShadow(Vector3 position, 
+    private void DisplayShadow(Vector3 position,
                             Vector3 surfaceNormal,
                             bool canBePlaced)
     {
-        // Rotate the shadow so that it is displayed on the correct surface and matches the object.
+        // Rotate and scale the shadow so that it is displayed on the correct surface and matches the object.
         float rotationX = 0.0f;
 
         if (PlacementSurface == PlacementSurfaces.Horizontal)
