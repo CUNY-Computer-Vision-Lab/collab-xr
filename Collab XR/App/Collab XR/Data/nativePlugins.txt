@@ -1,5 +1,0 @@
-HolographicAppRemoting.dll
-AudioPluginMsHRTF.dll
-UnityRemotingWMR.dll
-PerceptionDevice.dll
-PlaneFinding.dll
