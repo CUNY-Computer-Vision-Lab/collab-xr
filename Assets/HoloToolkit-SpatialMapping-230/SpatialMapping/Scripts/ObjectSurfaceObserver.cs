@@ -34,6 +34,9 @@ namespace Academy.HoloToolkit.Unity
             PhotonView photonView = PhotonView.Get(roomObject);
 
             MeshFilter[] meshFilters = roomObject.GetComponentsInChildren<MeshFilter>();
+
+            Debug.Log("Found " + meshFilters.Length + " mesh chunks. Combining...");
+
             CombineInstance[] combine = new CombineInstance[meshFilters.Length];
 
             int i = 0;
@@ -49,6 +52,8 @@ namespace Academy.HoloToolkit.Unity
             mesh.CombineMeshes(combine);
 
             byte[] serialized = MeshSerializer.WriteMesh(mesh, true);
+
+            Debug.Log("Sending combined and serialized mesh.");
 
             photonView.RPC("TransferMesh", RpcTarget.All, serialized);
         }
