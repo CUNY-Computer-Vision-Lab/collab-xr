@@ -578,11 +578,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: Template3D
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: Collab XR\Assets\WSATestCertificate.pfx
+  metroCertificatePath: Assets/WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: DefaultCompany
-  metroCertificateIssuer: DefaultCompany
-  metroCertificateNotAfter: 00492a66dd6bd601
+  metroCertificateSubject: ShinyBus
+  metroCertificateIssuer: ShinyBus
+  metroCertificateNotAfter: 80726e0b5f70d601
   metroApplicationDescription: Template_3D
   wsaImages: {}
   metroTileShortName: 
