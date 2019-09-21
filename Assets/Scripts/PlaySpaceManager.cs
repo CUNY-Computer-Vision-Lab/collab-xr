@@ -41,7 +41,7 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
         SpatialMappingManager.Instance.SetSurfaceMaterial(defaultMaterial);
 
         // Register for the MakePlanesComplete event.
-        SurfaceMeshesToPlanes.Instance.MakePlanesComplete += SurfaceMeshesToPlanes_MakePlanesComplete;
+        //SurfaceMeshesToPlanes.Instance.MakePlanesComplete += SurfaceMeshesToPlanes_MakePlanesComplete;
     }
 
     /// <summary>
@@ -80,7 +80,7 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
                 }
 
                 // 3.a: Call CreatePlanes() to generate planes.
-                CreatePlanes();
+                //CreatePlanes();
 
                 // 3.a: Set meshesProcessed to true.
                 meshesProcessed = true;
@@ -105,49 +105,42 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
 
         // 3.a: Get all floor and table planes by calling
         // SurfaceMeshesToPlanes.Instance.GetActivePlanes().
-        // Assign the result to the 'horizontal' list.
+        // Assign the result to the 'horizontal' List.
         horizontal = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Table | PlaneTypes.Floor);
 
         // 3.a: Get all wall planes by calling
         // SurfaceMeshesToPlanes.Instance.GetActivePlanes().
-        // Assign the result to the 'vertical' list.
+        // Assign the result to the 'vertical' List.
         vertical = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Wall);
 
         // Check to see if we have enough horizontal planes (minimumFloors)
         // and vertical planes (minimumWalls), to set holograms on in the world.
         if (horizontal.Count >= minimumFloors && vertical.Count >= minimumWalls)
         {
-            // We have enough floors and walls to place our holograms on...
+            // we have enough floors and walls to place our holograms on...
 
-            // 3.a: Let's reduce our triangle count by removing triangles
-            // from SpatialMapping meshes that intersect with our active planes.
-            // Call RemoveVertices().
-            // Pass in all activePlanes found by SurfaceMeshesToPlanes.Instance.
+            // 3.a: let's reduce our triangle count by removing triangles
+            // from spatialmapping meshes that intersect with our active planes.
+            // call RemoveVertices().
+            // pass in all ActivePlanes found by SurfaceMeshesToPlanes.Instance.
             RemoveVertices(SurfaceMeshesToPlanes.Instance.ActivePlanes);
 
-            // 3.a: We can indicate to the user that scanning is over by
-            // changing the material applied to the Spatial Mapping meshes.
-            // Call SpatialMappingManager.Instance.SetSurfaceMaterial().
-            // Pass in the secondaryMaterial.
+            // 3.a: we can indicate to the user that scanning is over by
+            // changing the material applied to the spatial mapping meshes.
+            // call SpatialMappingManager.Instance.SetSurfaceMaterial().
+            // pass in the secondaryMaterial.
             SpatialMappingManager.Instance.SetSurfaceMaterial(secondaryMaterial);
-
-            // 3.a: We are all done processing the mesh, so we can now
-            // initialize a collection of Placeable holograms in the world
-            // and use horizontal/vertical planes to set their starting positions.
-            // Call SpaceCollectionManager.Instance.GenerateItemsInWorld().
-            // Pass in the lists of horizontal and vertical planes that we found earlier.
-            SpaceCollectionManager.Instance.GenerateItemsInWorld(horizontal, vertical);
         }
         else
         {
-            // We do not have enough floors/walls to place our holograms on...
+            // we do not have enough floors/walls to place our holograms on...
 
-            // 3.a: Re-enter scanning mode so the user can find more surfaces by 
+            // 3.a: re-enter scanning mode so the user can find more surfaces by 
             // calling StartObserver() on the SpatialMappingManager.Instance.
             SpatialMappingManager.Instance.StartObserver();
 
-            // 3.a: Re-process spatial data after scanning completes by
-            // re-setting meshesProcessed to false.
+            // 3.a: re-process spatial data after scanning completes by
+            // re-setting meshesprocessed to false.
             meshesProcessed = false;
         }
     }
