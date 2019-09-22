@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Windows.Speech;
 using Academy.HoloToolkit.Unity;
 using Photon.Pun;
+using System;
 
 /// <summary>
 /// The SurfaceManager class allows applications to scan the environment for a specified amount of time 
@@ -33,11 +34,6 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
     public static PhotonView photonView;
 
     /// <summary>
-    /// Indicates if processing of the surface meshes is complete.
-    /// </summary>
-    private bool meshesProcessed = false;
-
-    /// <summary>
     /// GameObject initialization.
     /// </summary>
     private void Start()
@@ -45,128 +41,25 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
         // Update surfaceObserver and storedMeshes to use the same material during scanning.
         SpatialMappingManager.Instance.SetSurfaceMaterial(defaultMaterial);
 
-        // Register for the MakePlanesComplete event.
-        //SurfaceMeshesToPlanes.Instance.MakePlanesComplete += SurfaceMeshesToPlanes_MakePlanesComplete;
+        photonView = PhotonView.Get(this);
+
+        Debug.Log("STARTING TIMER");
+
+        var timer = new System.Threading.Timer(
+            e => this.sendMesh(),
+            null,
+            TimeSpan.Zero,
+            TimeSpan.FromSeconds(5)
+        );
     }
-
-    /// <summary>
-    /// Called once per frame.
-    /// </summary>
-    private void Update()
-    {
-        // Check to see if the spatial mapping data has been processed
-        // and if we are limiting how much time the user can spend scanning.
-        if (!meshesProcessed && limitScanningByTime)
-        {
-            // If we have not processed the spatial mapping data
-            // and scanning time is limited...
-
-            // Check to see if enough scanning time has passed
-            // since starting the observer.
-            if (limitScanningByTime && ((Time.time - SpatialMappingManager.Instance.StartTime) < scanTime))
-            {
-                // If we have a limited scanning time, then we should wait until
-                // enough time has passed before processing the mesh.
-            }
-            else
-            {
-                // The user should be done scanning their environment,
-                // so start processing the spatial mapping data...
-
-                /* TODO: 3.a DEVELOPER CODING EXERCISE 3.a */
-
-                // 3.a: Check if IsObserverRunning() is true on the
-                // SpatialMappingManager.Instance.
-                if (SpatialMappingManager.Instance.IsObserverRunning())
-                {
-                    // 3.a: If running, Stop the observer by calling
-                    // StopObserver() on the SpatialMappingManager.Instance.
-                    SpatialMappingManager.Instance.StopObserver();
-                }
-
-                // 3.a: Call CreatePlanes() to generate planes.
-                //CreatePlanes();
-
-                // 3.a: Set meshesProcessed to true.
-                meshesProcessed = true;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Handler for the SurfaceMeshesToPlanes MakePlanesComplete event.
-    /// </summary>
-    /// <param name="source">Source of the event.</param>
-    /// <param name="args">Args for the event.</param>
-    private void SurfaceMeshesToPlanes_MakePlanesComplete(object source, System.EventArgs args)
-    {
-        /* TODO: 3.a DEVELOPER CODING EXERCISE 3.a */
-
-        // Collection of floor and table planes that we can use to set horizontal items on.
-        List<GameObject> horizontal = new List<GameObject>();
-
-        // Collection of wall planes that we can use to set vertical items on.
-        List<GameObject> vertical = new List<GameObject>();
-
-        // 3.a: Get all floor and table planes by calling
-        // SurfaceMeshesToPlanes.Instance.GetActivePlanes().
-        // Assign the result to the 'horizontal' List.
-        horizontal = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Table | PlaneTypes.Floor);
-
-        // 3.a: Get all wall planes by calling
-        // SurfaceMeshesToPlanes.Instance.GetActivePlanes().
-        // Assign the result to the 'vertical' List.
-        vertical = SurfaceMeshesToPlanes.Instance.GetActivePlanes(PlaneTypes.Wall);
-
-        // Check to see if we have enough horizontal planes (minimumFloors)
-        // and vertical planes (minimumWalls), to set holograms on in the world.
-        if (horizontal.Count >= minimumFloors && vertical.Count >= minimumWalls)
-        {
-            // we have enough floors and walls to place our holograms on...
-
-            // 3.a: let's reduce our triangle count by removing triangles
-            // from spatialmapping meshes that intersect with our active planes.
-            // call RemoveVertices().
-            // pass in all ActivePlanes found by SurfaceMeshesToPlanes.Instance.
-            RemoveVertices(SurfaceMeshesToPlanes.Instance.ActivePlanes);
-
-            // 3.a: we can indicate to the user that scanning is over by
-            // changing the material applied to the spatial mapping meshes.
-            // call SpatialMappingManager.Instance.SetSurfaceMaterial().
-            // pass in the secondaryMaterial.
-            SpatialMappingManager.Instance.SetSurfaceMaterial(secondaryMaterial);
-        }
-        else
-        {
-            // we do not have enough floors/walls to place our holograms on...
-
-            // 3.a: re-enter scanning mode so the user can find more surfaces by 
-            // calling StartObserver() on the SpatialMappingManager.Instance.
-            SpatialMappingManager.Instance.StartObserver();
-
-            // 3.a: re-process spatial data after scanning completes by
-            // re-setting meshesprocessed to false.
-            meshesProcessed = false;
-        }
-    }
-
-    // Start is called before the first frame update
-    //void Start()
-    //{
-    //    photonView = PhotonView.Get(this);
-
-
-    //    var timer = new System.Threading.Timer(
-    //        e => this.sendMesh(),
-    //        null,
-    //        TimeSpan.Zero,
-    //        TimeSpan.FromSeconds(20)
-    //    );
-    //}
 
     void sendMesh()
     {
+        Debug.Log("Sending Mes 1");
+
         GameObject[] meshChunks = GameObject.FindGameObjectsWithTag("PhotonMesh");
+
+        Debug.Log("making meshfilters list");
 
         List<MeshFilter> meshFilters = new List<MeshFilter>();
 
@@ -184,10 +77,14 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
         int i = 0;
         while (i < meshFilters.Count)
         {
+            Debug.Log(i.ToString());
             combine[i].mesh = meshFilters[i].mesh;
             combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
             i++;
         }
+
+        Debug.Log("mesh count: ");
+        Debug.Log(meshFilters.Count.ToString());
 
         Mesh mesh = new Mesh();
 
@@ -199,40 +96,4 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
 
     }
 
-    /// <summary>
-    /// Creates planes from the spatial mapping surfaces.
-    /// </summary>
-    private void CreatePlanes()
-    {
-        // Generate planes based on the spatial map.
-        SurfaceMeshesToPlanes surfaceToPlanes = SurfaceMeshesToPlanes.Instance;
-        if (surfaceToPlanes != null && surfaceToPlanes.enabled)
-        {
-            surfaceToPlanes.MakePlanes();
-        }
-    }
-
-    /// <summary>
-    /// Removes triangles from the spatial mapping surfaces.
-    /// </summary>
-    /// <param name="boundingObjects"></param>
-    private void RemoveVertices(IEnumerable<GameObject> boundingObjects)
-    {
-        RemoveSurfaceVertices removeVerts = RemoveSurfaceVertices.Instance;
-        if (removeVerts != null && removeVerts.enabled)
-        {
-            removeVerts.RemoveSurfaceVerticesWithinBounds(boundingObjects);
-        }
-    }
-
-    /// <summary>
-    /// Called when the GameObject is unloaded.
-    /// </summary>
-    private void OnDestroy()
-    {
-        if (SurfaceMeshesToPlanes.Instance != null)
-        {
-            SurfaceMeshesToPlanes.Instance.MakePlanesComplete -= SurfaceMeshesToPlanes_MakePlanesComplete;
-        }
-    }
 }

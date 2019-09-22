@@ -4,7 +4,7 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - roomModel: {fileID: -927199367670048503, guid: a78069e96ed906d42a54a96b76ddc3a8,
+  - roomModel: {fileID: -927199367670048503, guid: 7d8e0b7bbc5665249b079b21381eb3b7,
       type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
