@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.Windows.Speech;
 using Academy.HoloToolkit.Unity;
-using Photon.Pun;
 using System;
 
 /// <summary>
@@ -29,10 +28,6 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
     [Tooltip("Minimum number of wall planes required in order to exit scanning/processing mode.")]
     public uint minimumWalls = 1;
 
-    public Camera backgroundCamera;
-    //public RawImage rawImage;
-    public static PhotonView photonView;
-
     /// <summary>
     /// GameObject initialization.
     /// </summary>
@@ -41,59 +36,7 @@ public class PlaySpaceManager : Singleton<PlaySpaceManager>
         // Update surfaceObserver and storedMeshes to use the same material during scanning.
         SpatialMappingManager.Instance.SetSurfaceMaterial(defaultMaterial);
 
-        photonView = PhotonView.Get(this);
-
-        Debug.Log("STARTING TIMER");
-
-        var timer = new System.Threading.Timer(
-            e => this.sendMesh(),
-            null,
-            TimeSpan.Zero,
-            TimeSpan.FromSeconds(5)
-        );
     }
 
-    void sendMesh()
-    {
-        Debug.Log("Sending Mes 1");
-
-        GameObject[] meshChunks = GameObject.FindGameObjectsWithTag("PhotonMesh");
-
-        Debug.Log("making meshfilters list");
-
-        List<MeshFilter> meshFilters = new List<MeshFilter>();
-
-        foreach (var item in meshChunks)
-        {
-            MeshFilter _meshFilter = item.GetComponent<MeshFilter>();
-            if (_meshFilter)
-            {
-                meshFilters.Add(_meshFilter);
-            }
-        }
-
-        CombineInstance[] combine = new CombineInstance[meshFilters.Count];
-
-        int i = 0;
-        while (i < meshFilters.Count)
-        {
-            Debug.Log(i.ToString());
-            combine[i].mesh = meshFilters[i].mesh;
-            combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-            i++;
-        }
-
-        Debug.Log("mesh count: ");
-        Debug.Log(meshFilters.Count.ToString());
-
-        Mesh mesh = new Mesh();
-
-        mesh.CombineMeshes(combine);
-
-        byte[] serialized = MeshSerializer.WriteMesh(mesh, true);
-
-        photonView.RPC("GetStreamData", RpcTarget.All, serialized);
-
-    }
 
 }
