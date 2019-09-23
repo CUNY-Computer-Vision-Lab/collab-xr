@@ -188,33 +188,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpatialMapping
       objectReference: {fileID: 0}
+    - target: {fileID: 1000010302963436, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -6.6173964
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 5.1144004
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 20.348288
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0.018325752
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.98087996
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: 0.115597196
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.15548675
       objectReference: {fileID: 0}
     - target: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 3}
       propertyPath: m_RootOrder
@@ -246,6 +250,11 @@ PrefabInstance:
         type: 3}
       propertyPath: RecalculateNormals
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000012698980792, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
+        type: 3}
+      propertyPath: TimeBetweenUpdates
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114000010641181420, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
         type: 3}
@@ -327,6 +336,25 @@ PrefabInstance:
       propertyPath: m_TagString
       value: PhotonMesh
       objectReference: {fileID: 0}
+    - target: {fileID: 1000013189191010, guid: a5bfcc12f0da80a4ba738ad168f94dbc, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011487022016, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
+        type: 3}
+      propertyPath: secondaryMaterial
+      value: 
+      objectReference: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
+    - target: {fileID: 114000011487022016, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
+        type: 3}
+      propertyPath: limitScanningByTime
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000011487022016, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
+        type: 3}
+      propertyPath: defaultMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
     - target: {fileID: 4000012290930406, guid: a5bfcc12f0da80a4ba738ad168f94dbc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -371,21 +399,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 114000011487022016, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
-        type: 3}
-      propertyPath: secondaryMaterial
-      value: 
-      objectReference: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
-    - target: {fileID: 114000011487022016, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
-        type: 3}
-      propertyPath: limitScanningByTime
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 114000011487022016, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
-        type: 3}
-      propertyPath: defaultMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
     - target: {fileID: 114000011684836174, guid: a5bfcc12f0da80a4ba738ad168f94dbc,
         type: 3}
       propertyPath: drawPlanesMask
