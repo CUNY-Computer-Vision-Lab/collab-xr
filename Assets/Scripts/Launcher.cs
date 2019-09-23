@@ -111,6 +111,7 @@ namespace Com.MyCompany.MyGame
         public override void OnJoinedRoom()
         {
             Debug.Log("PUN Basics Tutorial/Launcher: OnJoinedRoom() called by PUN. Now this client is in a room.");
+            PhotonNetwork.LoadLevel("Collab");
         }
 
         #endregion
