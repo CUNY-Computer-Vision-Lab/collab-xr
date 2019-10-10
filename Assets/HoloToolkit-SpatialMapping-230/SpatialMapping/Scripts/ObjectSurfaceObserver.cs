@@ -26,39 +26,6 @@ namespace Academy.HoloToolkit.Unity
         }
 
         /// <summary>
-        /// Send mesh to collaborator.
-        /// </summary>
-        void TransferMesh()
-        {
-            GameObject roomObject = GameObject.FindWithTag("SRMesh");
-            PhotonView photonView = PhotonView.Get(roomObject);
-
-            MeshFilter[] meshFilters = roomObject.GetComponentsInChildren<MeshFilter>();
-
-            Debug.Log("Found " + meshFilters.Length + " mesh chunks. Combining...");
-
-            CombineInstance[] combine = new CombineInstance[meshFilters.Length];
-
-            int i = 0;
-            while (i < meshFilters.Length)
-            {
-                combine[i].mesh = meshFilters[i].mesh;
-                combine[i].transform = meshFilters[i].transform.localToWorldMatrix;
-                i++;
-            }
-
-            Mesh mesh = new Mesh();
-
-            mesh.CombineMeshes(combine);
-
-            byte[] serialized = MeshSerializer.WriteMesh(mesh, true);
-
-            Debug.Log("Sending combined and serialized mesh.");
-
-            photonView.RPC("TransferMesh", RpcTarget.All, serialized);
-        }
-
-        /// <summary>
         /// Loads the SpatialMapping mesh from the specified room object.
         /// </summary>
         /// <param name="roomModel">The room model to load meshes from.</param>
@@ -101,8 +68,6 @@ namespace Academy.HoloToolkit.Unity
                     collider.sharedMesh = surface.GetComponent<MeshFilter>().sharedMesh;
                 }
 
-                // Collab-xr -- send mesh data to remote agent
-                this.TransferMesh();
             }
             catch
             {

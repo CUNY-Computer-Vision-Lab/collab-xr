@@ -151,17 +151,9 @@ namespace Academy.HoloToolkit.Unity
         /// <returns>Yield result.</returns>
         private IEnumerator MakePlanesRoutine()
         {
-            // Remove any previously existing planes, as they may no longer be valid.
-            for (int index = 0; index < ActivePlanes.Count; index++)
-            {
-                Destroy(ActivePlanes[index]);
-            }
-
             // Pause our work, and continue on the next frame.
             yield return null;
             float start = Time.realtimeSinceStartup;
-
-            ActivePlanes.Clear();
 
             // Get the latest Mesh data from the Spatial Mapping Manager.
             List<PlaneFinding.MeshData> meshData = new List<PlaneFinding.MeshData>();
@@ -173,7 +165,6 @@ namespace Academy.HoloToolkit.Unity
                 if (filter != null && filter.sharedMesh != null)
                 {
                     // fix surface mesh normals so we can get correct plane orientation.
-                    filter.mesh.RecalculateNormals();
                     meshData.Add(new PlaneFinding.MeshData(filter));
                 }
 

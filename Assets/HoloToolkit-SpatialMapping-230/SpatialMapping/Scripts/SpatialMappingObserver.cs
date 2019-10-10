@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.WSA;
+using Photon.Pun;
 
 namespace Academy.HoloToolkit.Unity
 {
@@ -74,7 +75,7 @@ namespace Academy.HoloToolkit.Unity
         /// A queue of clean surface GameObjects ready to be reused.
         /// </summary>
         private Queue<GameObject> availableSurfaces = new Queue<GameObject>();
-
+        
         /// <summary>
         /// A queue of SurfaceData objects. SurfaceData objects are sent to the
         /// SurfaceObserver to generate meshes of the environment.
@@ -152,6 +153,8 @@ namespace Academy.HoloToolkit.Unity
                 // We want the first update immediately.
                 updateTime = 0;
             }
+
+            PhotonNetwork.Instantiate("MyPrefabName", new Vector3(0, 0, 0), Quaternion.identity, 0);
         }
 
         /// <summary>
@@ -367,6 +370,34 @@ namespace Academy.HoloToolkit.Unity
                     }
                     break;
             }
+
+            //List<MeshFilter> filters = SpatialMappingManager.Instance.GetMeshFilters();
+
+            //CombineInstance[] combine = new CombineInstance[filters.Count];
+
+            //int i = 0;
+            //while (i < filters.Count)
+            //{
+            //    combine[i].mesh = filters[i].mesh;
+            //    combine[i].transform = filters[i].transform.localToWorldMatrix;
+            //    i++;
+            //}
+
+            //Mesh mesh = new Mesh();
+
+            //mesh.CombineMeshes(combine);
+
+            //byte[] serialized = MeshSerializer.WriteMesh(mesh, true);
+
+            //GameObject obj = PhotonView.Find("MyPrefabName");
+
+            //PhotonView photonView = PhotonView.Get(obj);
+
+            //if (photonView)
+            //{
+            //    photonView.RPC("GetStreamData", RpcTarget.All, serialized);
+            //}
+
 
             // Event
             if (SurfaceChanged != null)
